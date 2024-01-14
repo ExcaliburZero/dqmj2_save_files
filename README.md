@@ -3,13 +3,14 @@ Info on the save data file format for Dragon Quest Monsters: Joker 2.
 Re-reverse engineered from DQM Joker 2 Save Data Editor (created by asa-o, translated into English by Hynckel and jm_plata):
 
 https://web.archive.org/web/20200303213846/http://www.asa-o.net/tools/dqmj2_cheat
+
 https://www.woodus.com/den/games/dqm5ds/save_data_editor.php
 
 ## Format
 * Binary
 * Little endian
 
-### Header [0x0 to 0x90]
+### Header [0x0 to 0x8F]
 #### Magic [0x0 to 0x2]
 Magic bytes that indicate that this is a DQMJ2 save file.
 
