@@ -23,7 +23,7 @@ Checksum of the data portion of the file.
 32bit unsigned integer.
 
 ```python
-def dqj2_checksum(data: list[bytes]) -> int:
+def data_checksum(data: list[bytes]) -> int:
     num = 0
     i = 0
     j = 0
@@ -45,7 +45,20 @@ Checksum of all prior portions of the header (including the data checksum).
 32bit unsigned integer.
 
 ```python
-# TODO: IIRC same checksum algorithm as data checksum, but on 0x0 to 0x8B
+def header_checksum(header: list[bytes]) -> int:
+    num = 0
+    i = 0
+    j = 0
+    while i < header_size - 4:
+        value = int.from_bytes(header[j * 4:j * 4 + 4], "little")
+
+        num += value
+        num = num & 0xffffffff
+
+        i += 4
+        j += 1
+
+    return num
 ```
 
 ### Data [0x90 to 0x___]
