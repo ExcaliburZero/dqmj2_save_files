@@ -66,4 +66,9 @@ def header_checksum(header: list[bytes]) -> int:
 #### Play time [0x90 to 0x94]
 Number of frames that the game has been played for. Divide by 30 to get the number of seconds of playtime (30fps?).
 
-32bit unsigned integer.
+32bit unsigned integer. (double check this? might be 64bit)
+
+#### Player name [0x98 to 0x9F]
+Name of the player character.
+
+8 characters max. Each character is 1byte in a non-ascii encoding. `0x00` indicates unused character.

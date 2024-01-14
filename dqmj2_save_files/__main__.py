@@ -29,6 +29,7 @@ def print_header(header: saves.Header) -> None:
 def print_data(data: saves.Data) -> None:
     fields = [
         ("Play time", data.play_time),
+        ("Player name", data.player_name),
     ]
 
     print("Data:")

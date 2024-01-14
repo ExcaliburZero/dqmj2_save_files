@@ -3,6 +3,7 @@ from typing import IO, List
 
 import datetime
 
+from . import character_set
 from .data_locations import *
 
 ENDIANESS = "little"  # confirmed for DQJ2 save files
@@ -31,6 +32,19 @@ class SaveDataRaw:
         )
 
         return datetime.timedelta(seconds=play_time_frames) / 30
+
+    @property
+    def player_name(self) -> str:
+        characters = [
+            SaveDataRaw.__int_to_char(i)
+            for i in self.raw[PLAYER_NAME_START : PLAYER_NAME_END + 1]
+        ]
+
+        return "".join(characters)
+
+    @staticmethod
+    def __int_to_char(i: int) -> str:
+        return character_set.int_to_char(i)
 
     @staticmethod
     def __checksum(data: List[bytes]) -> int:
@@ -72,6 +86,7 @@ class Header:
 @dataclass
 class Data:
     play_time: datetime.timedelta
+    player_name: str
 
 
 @dataclass
@@ -85,13 +100,14 @@ class SaveData:
         header_checksum = raw.header_checksum
 
         play_time = raw.play_time
+        player_name = raw.player_name
 
         return SaveData(
             Header(
                 data_checksum=data_checksum,
                 header_checksum=header_checksum,
             ),
-            Data(play_time=play_time),
+            Data(play_time=play_time, player_name=player_name),
         )
 
     @staticmethod
