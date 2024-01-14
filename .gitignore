@@ -1,5 +1,8 @@
 .vscode
 
+# Just for now...
+saves
+
 ### Python ###
 # Byte-compiled / optimized / DLL files
 __pycache__/
