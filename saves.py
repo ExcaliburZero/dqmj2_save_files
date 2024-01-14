@@ -1,6 +1,7 @@
 from dataclasses import dataclass
 from typing import IO, List
 
+import datetime
 import sys
 
 from data_locations import *
@@ -23,6 +24,14 @@ class SaveDataRaw:
         return int.from_bytes(
             self.raw[HEADER_CHECKSUM_START : HEADER_CHECKSUM_END + 1], ENDIANESS
         )
+
+    @property
+    def play_time(self) -> datetime.timedelta:
+        play_time_frames = int.from_bytes(
+            self.raw[PLAY_TIME_START : PLAY_TIME_END + 1], ENDIANESS
+        )
+
+        return datetime.timedelta(seconds=play_time_frames) / 30
 
     @staticmethod
     def __checksum(data: List[bytes]) -> int:
@@ -62,22 +71,28 @@ class Header:
 
 
 @dataclass
+class Data:
+    play_time: datetime.timedelta
+
+
+@dataclass
 class SaveData:
     header: Header
+    data: Data
 
     @staticmethod
     def from_raw(raw: "SaveDataRaw") -> "SaveData":
         data_checksum = raw.data_checksum
         header_checksum = raw.header_checksum
 
-        print(raw.calculate_data_checksum())
-        print(raw.calculate_header_checksum())
+        play_time = raw.play_time
 
         return SaveData(
             Header(
                 data_checksum=data_checksum,
                 header_checksum=header_checksum,
-            )
+            ),
+            Data(play_time=play_time),
         )
 
     @staticmethod

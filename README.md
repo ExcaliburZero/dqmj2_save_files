@@ -49,3 +49,7 @@ Checksum of all prior portions of the header (including the data checksum).
 ```
 
 ### Data [0x90 to 0x___]
+#### Play time [0x90 to 0x94]
+Number of frames that the game has been played for. Divide by 30 to get the number of seconds of playtime (30fps?).
+
+32bit unsigned integer.
