@@ -2,9 +2,8 @@ from dataclasses import dataclass
 from typing import IO, List
 
 import datetime
-import sys
 
-from data_locations import *
+from .data_locations import *
 
 ENDIANESS = "little"  # confirmed for DQJ2 save files
 
@@ -100,9 +99,3 @@ class SaveData:
         raw = SaveDataRaw.from_sav(input_stream)
 
         return SaveData.from_raw(raw)
-
-
-if __name__ == "__main__":
-    with open(sys.argv[1], "rb") as input_stream:
-        data = SaveData.from_sav(input_stream)
-        print(data)
