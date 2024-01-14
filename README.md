@@ -10,6 +10,13 @@ https://www.woodus.com/den/games/dqm5ds/save_data_editor.php
 * Little endian
 
 ### Header [0x0 to 0x90]
+#### Magic [0x0 to 0x2]
+Magic bytes that indicate that this is a DQMJ2 save file.
+
+```
+SYN
+```
+
 #### Data checksum [0x88 to 0x8B]
 Checksum of the data portion of the file.
 
