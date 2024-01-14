@@ -72,3 +72,8 @@ Number of frames that the game has been played for. Divide by 30 to get the numb
 Name of the player character.
 
 8 characters max. Each character is 1byte in a non-ascii encoding. `0x00` indicates unused character.
+
+#### Gold [0xAC to 0xAF]
+Amount of gold the player currently has.
+
+Likely 32bit unsigned integer, but max allowed gold (in save editor = 999999) seems to not use top byte.

@@ -42,8 +42,15 @@ class SaveDataRaw:
 
         return "".join(characters)
 
+    @property
+    def gold(self) -> int:
+        return int.from_bytes(self.raw[GOLD_START : GOLD_END + 1], ENDIANESS)
+
     @staticmethod
     def __int_to_char(i: int) -> str:
+        if i == 0:
+            return ""
+
         return character_set.int_to_char(i)
 
     @staticmethod
@@ -87,6 +94,7 @@ class Header:
 class Data:
     play_time: datetime.timedelta
     player_name: str
+    gold: int
 
 
 @dataclass
@@ -101,13 +109,14 @@ class SaveData:
 
         play_time = raw.play_time
         player_name = raw.player_name
+        gold = raw.gold
 
         return SaveData(
             Header(
                 data_checksum=data_checksum,
                 header_checksum=header_checksum,
             ),
-            Data(play_time=play_time, player_name=player_name),
+            Data(play_time=play_time, player_name=player_name, gold=gold),
         )
 
     @staticmethod
