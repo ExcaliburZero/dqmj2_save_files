@@ -31,6 +31,7 @@ def print_data(data: saves.Data) -> None:
         ("Play time", data.play_time),
         ("Player name", data.player_name),
         ("Gold", data.gold),
+        ("ATM", data.atm),
     ]
 
     print("Data:")

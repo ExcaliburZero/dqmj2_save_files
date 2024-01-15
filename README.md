@@ -76,4 +76,9 @@ Name of the player character.
 #### Gold [0xAC to 0xAF]
 Amount of gold the player currently has.
 
-Likely 32bit unsigned integer, but max allowed gold (in save editor = 999999) seems to not use top byte.
+Likely 32bit unsigned integer, but max allowed gold (in save editor = 999,999) seems to not use top byte.
+
+#### ATM [0xB0 to 0xB3]
+Amount of gold the player currently has stored in the ATM.
+
+Likely 32bit unsigned integer, but max allowed gold (in save editor = 9,999,999) seems to not use top byte.
