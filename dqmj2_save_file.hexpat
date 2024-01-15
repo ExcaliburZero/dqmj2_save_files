@@ -17,3 +17,4 @@ u8 save_location_id @ 0x3FCC;
 s32 save_location_x @ 0x3FD4;
 s32 save_location_y @ 0x3FD8;
 s32 save_location_z @ 0x3FDC;
+u8 menu_commands[0x0C] @ 0x1CC [[comment("Re-orderable icons on the player's menu. (ex. Save, Equipment, etc.)")]];
