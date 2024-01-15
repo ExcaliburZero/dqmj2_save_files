@@ -76,10 +76,14 @@ class SaveDataRaw:
     def calculate_data_checksum(self) -> int:
         return SaveDataRaw.__checksum(self.raw[HEADER_SIZE:])
 
-    def calculate_header_checksum(self) -> int:
+    def calculate_header_checksum(
+        self, allow_invalid_data_checksum: bool = False
+    ) -> int:
         # Assert just in case data checksum is out of date, since it is an input to the header
         # checksum
-        assert self.data_checksum == self.calculate_data_checksum()
+        assert allow_invalid_data_checksum or (
+            self.data_checksum == self.calculate_data_checksum()
+        )
 
         return SaveDataRaw.__checksum(self.raw[: DATA_CHECKSUM_END + 1])
 

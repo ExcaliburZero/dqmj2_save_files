@@ -9,16 +9,29 @@ from . import saves
 @click.argument("save_filepath")
 def describe(save_filepath: str) -> int:
     with open(save_filepath, "rb") as input_stream:
-        data = saves.SaveData.from_sav(input_stream)
+        raw_data = saves.SaveDataRaw.from_sav(input_stream)
+        data = saves.SaveData.from_raw(raw_data)
 
-    print_header(data.header)
+    print_header(data.header, raw_data)
     print_data(data.data)
 
 
-def print_header(header: saves.Header) -> None:
+def print_header(header: saves.Header, raw_data: saves.SaveDataRaw) -> None:
+    data_checksum_valid = raw_data.data_checksum == raw_data.calculate_data_checksum()
+    header_checksum_valid = (
+        raw_data.header_checksum
+        == raw_data.calculate_header_checksum(allow_invalid_data_checksum=True)
+    )
+
     fields = [
-        ("Data checksum", header.data_checksum),
-        ("Header checksum", header.header_checksum),
+        (
+            "Data checksum",
+            f"{header.data_checksum} ({'ok' if data_checksum_valid else 'invalid'})",
+        ),
+        (
+            "Header checksum",
+            f"{header.header_checksum} ({'ok' if header_checksum_valid else 'invalid'})",
+        ),
     ]
 
     print("Header:")
