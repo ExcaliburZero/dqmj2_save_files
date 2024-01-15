@@ -5,3 +5,4 @@ u32 play_time_frames @ 0x90;
 u8 player_name[0x08] @ 0x98;
 u32 gold @ 0xAC;
 u32 atm @ 0xB0;
+u16 victories @ 0x1DC;

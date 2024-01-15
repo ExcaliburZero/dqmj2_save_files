@@ -82,3 +82,8 @@ Likely 32bit unsigned integer, but max allowed gold (in save editor = 999,999) s
 Amount of gold the player currently has stored in the ATM.
 
 Likely 32bit unsigned integer, but max allowed gold (in save editor = 9,999,999) seems to not use top byte.
+
+#### Victories [0x1DC to 0x1DD]
+Number of battles that the player has won.
+
+16bit unsigned integer.

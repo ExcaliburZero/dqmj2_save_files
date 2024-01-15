@@ -62,6 +62,10 @@ class SaveDataRaw:
     def atm(self) -> int:
         return int.from_bytes(self.raw[ATM_START : ATM_END + 1], ENDIANESS)
 
+    @property
+    def victories(self) -> int:
+        return int.from_bytes(self.raw[VICTORIES_START : VICTORIES_END + 1], ENDIANESS)
+
     @staticmethod
     def __int_to_char(i: int) -> str:
         if i == 0:
@@ -119,6 +123,7 @@ class Data:
     player_name: str
     gold: int
     atm: int
+    victories: int
 
 
 @dataclass
@@ -135,13 +140,20 @@ class SaveData:
         player_name = raw.player_name
         gold = raw.gold
         atm = raw.atm
+        victories = raw.victories
 
         return SaveData(
             Header(
                 data_checksum=data_checksum,
                 header_checksum=header_checksum,
             ),
-            Data(play_time=play_time, player_name=player_name, gold=gold, atm=atm),
+            Data(
+                play_time=play_time,
+                player_name=player_name,
+                gold=gold,
+                atm=atm,
+                victories=victories,
+            ),
         )
 
     @staticmethod
