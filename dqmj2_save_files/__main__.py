@@ -7,13 +7,35 @@ from . import saves
 
 @click.command()
 @click.argument("save_filepath")
-def describe(save_filepath: str) -> int:
+def describe(save_filepath: str) -> None:
     with open(save_filepath, "rb") as input_stream:
         raw_data = saves.SaveDataRaw.from_sav(input_stream)
         data = saves.SaveData.from_raw(raw_data)
 
     print_header(data.header, raw_data)
     print_data(data.data)
+
+
+@click.command()
+@click.argument("save_filepath")
+def fix_checksums(save_filepath: str) -> None:
+    with open(save_filepath, "rb") as input_stream:
+        raw_data = saves.SaveDataRaw.from_sav(input_stream)
+
+    raw_data.data_checksum = raw_data.calculate_data_checksum()
+    raw_data.header_checksum = raw_data.calculate_header_checksum()
+
+    with open(save_filepath, "wb") as output_stream:
+        raw_data.write_sav(output_stream)
+
+
+@click.group()
+def all_commands():
+    pass
+
+
+all_commands.add_command(describe)
+all_commands.add_command(fix_checksums)
 
 
 def print_header(header: saves.Header, raw_data: saves.SaveDataRaw) -> None:
@@ -53,4 +75,4 @@ def print_data(data: saves.Data) -> None:
 
 
 if __name__ == "__main__":
-    describe()
+    all_commands()

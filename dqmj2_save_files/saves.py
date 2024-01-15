@@ -11,7 +11,7 @@ ENDIANESS = "little"  # confirmed for DQJ2 save files
 
 @dataclass
 class SaveDataRaw:
-    raw: List[bytes]
+    raw: bytearray
 
     @property
     def data_checksum(self) -> int:
@@ -19,11 +19,23 @@ class SaveDataRaw:
             self.raw[DATA_CHECKSUM_START : DATA_CHECKSUM_END + 1], ENDIANESS
         )
 
+    @data_checksum.setter
+    def data_checksum(self, checksum: int) -> int:
+        checksum_bytes = checksum.to_bytes(4, ENDIANESS)
+        for i, b in enumerate(checksum_bytes):
+            self.raw[i + DATA_CHECKSUM_START] = b
+
     @property
     def header_checksum(self) -> int:
         return int.from_bytes(
             self.raw[HEADER_CHECKSUM_START : HEADER_CHECKSUM_END + 1], ENDIANESS
         )
+
+    @header_checksum.setter
+    def header_checksum(self, checksum: int) -> int:
+        checksum_bytes = checksum.to_bytes(4, ENDIANESS)
+        for i, b in enumerate(checksum_bytes):
+            self.raw[i + HEADER_CHECKSUM_START] = b
 
     @property
     def play_time(self) -> datetime.timedelta:
@@ -89,7 +101,10 @@ class SaveDataRaw:
 
     @staticmethod
     def from_sav(input_stream: IO[bytes]) -> "SaveDataRaw":
-        return SaveDataRaw(input_stream.read(HEADER_SIZE + DATA_SIZE))
+        return SaveDataRaw(bytearray(input_stream.read(HEADER_SIZE + DATA_SIZE)))
+
+    def write_sav(self, output_stream: IO[bytes]) -> None:
+        output_stream.write(self.raw)
 
 
 @dataclass
